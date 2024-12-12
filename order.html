@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+			background-color: #121212;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+			background-color: blue;
+        }
+        .cart {
+            margin-top: 20px;
+            border: 1px solid #000;
+            padding: 10px;
+			background-color: orange;
+        }
+        .checkout {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Our Order Site</h1>
+
+    <div id="products">
+        <!-- Product template -->
+        <div class="product" data-id="1" data-price="150">
+            <h2>Product 1</h2>
+            <p>Price: 150€</p>
+            <button onclick="addToCart(1, 'Product 1', 150)">Add to Cart</button>
+        </div>
+        <div class="product" data-id="2" data-price="300">
+            <h2>Product 2</h2>
+            <p>Price: 300€</p>
+            <button onclick="addToCart(2, 'Product 2', 300)">Add to Cart</button>
+        </div>
+        <div class="product" data-id="3" data-price="650">
+            <h2>Product 3</h2>
+            <p>Price: 650€</p>
+            <button onclick="addToCart(3, 'Product 3', 650)">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items">
+            <li>No items in the cart.</li>
+        </ul>
+        <p><strong>Total:</strong> $<span id="cart-total">0</span></p>
+        <button class="checkout" onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(id, name, price) {
+            const item = cart.find(product => product.id === id);
+            if (item) {
+                item.quantity++;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<li>No items in the cart.</li>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    cartItems.innerHTML += `<li>${item.name} - $${item.price} x ${item.quantity}</li>`;
+                });
+            }
+            cartTotal.textContent = total;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+            } else {
+                alert('Thank you for your purchase!');
+                cart = [];
+                renderCart();
+            }
+        }
+    </script>
+
+</body>
+</html>
